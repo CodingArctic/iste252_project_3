@@ -38,16 +38,16 @@ class _BasicBottomNavBarState extends State<BasicBottomNavBar> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.camera),
-            label: 'Square',
+            icon: Icon(Icons.camera_alt),
+            label: 'Scan',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.square),
-            label: 'Radio Buttons',
+            icon: Icon(Icons.access_time),
+            label: 'History',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.square),
-            label: 'Square',
+            icon: Icon(Icons.add),
+            label: 'Generate',
           ),
         ],
         currentIndex: _selectedIndex,
