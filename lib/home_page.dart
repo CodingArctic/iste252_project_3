@@ -73,41 +73,51 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     // Dispose the widget itself.
     super.dispose();
     // Finally, dispose of the controller.
-    await controller.dispose();
+    // await controller.dispose();
   }
 
+  bool isDialogShowing = false;
+
   void _handleBarcode(BarcodeCapture capture) {
+    if (isDialogShowing) {
+      return;
+    }
+
+    didChangeAppLifecycleState(AppLifecycleState.inactive);
+
     setState(() {
       url = capture.barcodes.first.displayValue.toString();
     });
 
-    
-
     showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text('Scanned Code'),
-        content: Text('The scanned code is: $url'),
-        actions: <Widget>[
-          TextButton(
-            child: Text('Open Link'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-          TextButton(
-            child: Text('Save to Favorites'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      );
-    },
-  );
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Scanned Code'),
+          content: Text('The scanned code is: $url'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Open Link'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                didChangeAppLifecycleState(AppLifecycleState.resumed);
+                isDialogShowing = false;
+              },
+            ),
+            TextButton(
+              child: Text('Save to Favorites'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                didChangeAppLifecycleState(AppLifecycleState.resumed);
+                isDialogShowing = false;
+              },
+            ),
+          ],
+        );
+      },
+    );
 
-  dispose();
+    isDialogShowing = true;
   }
 
   @override
@@ -118,7 +128,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             height: 500,
             width: 300,
             child: MobileScanner(controller: controller)),
-        Text(url)
       ],
     );
   }
