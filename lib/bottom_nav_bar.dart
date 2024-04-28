@@ -16,8 +16,8 @@ class _BasicBottomNavBarState extends State<BasicBottomNavBar> {
 
   static const List<Widget> _pages = <Widget>[
     HomePage(),
+    HistoryPage(title: "generate"),
     GeneratePage(title: "generate"),
-    HistoryPage(title: "generate")
   ];
 
   void _onItemTapped(int index) {

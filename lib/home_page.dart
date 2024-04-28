@@ -1,8 +1,18 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+// import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+
+import 'package:mobile_scanner/mobile_scanner.dart';
 
 enum SizeChoices { small, medium, large }
+
+final MobileScannerController controller = MobileScannerController(
+  // required options for the scanner
+);
+
+StreamSubscription<Object?>? _subscription;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,29 +21,29 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  SizeChoices? _size = SizeChoices.small;
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
-  _onItemTapped(int index) {
-    setState(() {
-      _size = index == 0
-          ? SizeChoices.small
-          : index == 1
-              ? SizeChoices.medium
-              : SizeChoices.large;
-    });
-  }
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
 
-  String getFriendlyName(SizeChoices? character) {
-    switch (character) {
-      case SizeChoices.small:
-        return 'Small Coffee';
-      case SizeChoices.medium:
-        return 'Medium Coffee';
-      case SizeChoices.large:
-        return 'Large Coffee';
-      default:
-        return 'None';
+    switch (state) {
+      case AppLifecycleState.detached:
+      case AppLifecycleState.hidden:
+      case AppLifecycleState.paused:
+        return;
+      case AppLifecycleState.resumed:
+        // Restart the scanner when the app is resumed.
+        // Don't forget to resume listening to the barcode events.
+        _subscription = controller.barcodes.listen(_handleBarcode);
+
+        unawaited(controller.start());
+      case AppLifecycleState.inactive:
+        // Stop the scanner when the app is paused.
+        // Also stop the barcode events subscription.
+        unawaited(_subscription?.cancel());
+        _subscription = null;
+        unawaited(controller.stop());
     }
   }
 
@@ -41,37 +51,16 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        RadioListTile<SizeChoices>(
-          title: const Text('Small Coffee'),
-          value: SizeChoices.small,
-          groupValue: _size,
-          onChanged: (SizeChoices? value) {
-            setState(() {
-              _size = value;
-            });
-          },
-        ),
-        RadioListTile<SizeChoices>(
-          title: const Text('Medium Coffee'),
-          value: SizeChoices.medium,
-          groupValue: _size,
-          onChanged: (SizeChoices? value) {
-            setState(() {
-              _size = value;
-            });
-          },
-        ),
-        RadioListTile<SizeChoices>(
-          title: const Text('Large Coffee'),
-          value: SizeChoices.large,
-          groupValue: _size,
-          onChanged: (SizeChoices? value) {
-            setState(() {
-              _size = value;
-            });
-          },
-        ),
-        Text('Selected: ${getFriendlyName(_size)}'),
+        ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => BarcodeScannerWithOverlay(),
+                  ),
+                );
+              },
+              child: const Text('MobileScanner with Overlay'),
+            ),
       ],
     );
   }
