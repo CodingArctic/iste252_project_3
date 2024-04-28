@@ -12,6 +12,7 @@ class HistoryPage extends StatefulWidget {
 class _HistoryPageState extends State<HistoryPage> {
   List<Qrcode> qrcodes = [
     Qrcode(id: 0, url: 'youtube.com', imgUrl: '0'),
+    Qrcode(id: 19, url: 'https://www.bitchasshoe.com/users/list/urmum.jpeg', imgUrl: '1'),
     Qrcode(id: 1, url: 'google.com', imgUrl: '1'),
     Qrcode(id: 2, url: 'facebook.com', imgUrl: '2'),
     Qrcode(id: 3, url: 'twitter.com', imgUrl: '3'),
@@ -55,31 +56,49 @@ class _HistoryPageState extends State<HistoryPage> {
               child: ListView(
                 children: qrcodes.map((qrcode) {
                   return Padding(
-                    padding: const EdgeInsets.all(24.0),
+                    padding: const EdgeInsets.all(10.0),
                     child: Column(
                       children: [
-                        SizedBox(
-                          height: 45,
-                          child: Column(
-                            children: [
-                              Align(
-                                alignment: Alignment.center,
-                                child: Row(
-                                  children: [
-                                    const Image(
-                                      image: NetworkImage("https://media.sciencephoto.com/image/c0280133/800wm/C0280133-QR_Code_Example.jpg"), 
-                                      height: 40,
-                                      width: 40
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text('URL: ${qrcode.url}'),
-                                    ),
-                                    Icon(Icons.arrow_right, color: Theme.of(context).textTheme.bodyLarge?.color, size: 30),
-                                  ],
-                                )
+                        GestureDetector(
+                          onTap: () {
+                            print('Tapped on ${qrcode.url}');
+                          },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColorDark,
+                            border: Border(
+                              bottom: BorderSide(color: Theme.of(context).primaryColorLight, width: 0.5
                               ),
-                            ],
+                            ),
+                          ),
+                          height: 45,
+                            child: Column(
+                              children: [
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Image(
+                                        image: NetworkImage("https://media.sciencephoto.com/image/c0280133/800wm/C0280133-QR_Code_Example.jpg"), 
+                                        height: 40,
+                                        width: 40
+                                      ),
+                                      Flexible(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            qrcode.url,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      ),
+                                      Icon(Icons.arrow_right, color: Theme.of(context).textTheme.bodyLarge?.color, size: 30),
+                                    ],
+                                  )
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],
