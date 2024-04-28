@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 
 import 'package:mobile_scanner/mobile_scanner.dart';
 
+// import 'package:mobile_scanner_example/mobile_scanner_overlay.dart';
+
 enum SizeChoices { small, medium, large }
 
 final MobileScannerController controller = MobileScannerController(
-  // required options for the scanner
-);
+    // required options for the scanner
+    );
 
 StreamSubscription<Object?>? _subscription;
 
@@ -22,6 +24,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
+  String url = "Scan a QR Code!";
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -48,19 +51,74 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   }
 
   @override
+  void initState() {
+    super.initState();
+    // Start listening to lifecycle changes.
+    WidgetsBinding.instance.addObserver(this);
+
+    // Start listening to the barcode events.
+    _subscription = controller.barcodes.listen(_handleBarcode);
+
+    // Finally, start the scanner itself.
+    unawaited(controller.start());
+  }
+
+  @override
+  Future<void> dispose() async {
+    // Stop listening to lifecycle changes.
+    WidgetsBinding.instance.removeObserver(this);
+    // Stop listening to the barcode events.
+    unawaited(_subscription?.cancel());
+    _subscription = null;
+    // Dispose the widget itself.
+    super.dispose();
+    // Finally, dispose of the controller.
+    await controller.dispose();
+  }
+
+  void _handleBarcode(BarcodeCapture capture) {
+    setState(() {
+      url = capture.barcodes.first.displayValue.toString();
+    });
+
+    
+
+    showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Scanned Code'),
+        content: Text('The scanned code is: $url'),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Open Link'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          TextButton(
+            child: Text('Save to Favorites'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+
+  dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => BarcodeScannerWithOverlay(),
-                  ),
-                );
-              },
-              child: const Text('MobileScanner with Overlay'),
-            ),
+        SizedBox(
+            height: 500,
+            width: 300,
+            child: MobileScanner(controller: controller)),
+        Text(url)
       ],
     );
   }
