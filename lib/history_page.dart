@@ -11,10 +11,25 @@ class HistoryPage extends StatefulWidget {
 
 class _HistoryPageState extends State<HistoryPage> {
   List<Qrcode> qrcodes = [
-    Qrcode(id: 0, url: 'youtube.com', imgUrl: 'youtube'),
-    Qrcode(id: 1, url: 'google.com', imgUrl: 'google'),
-    Qrcode(id: 2, url: 'facebook.com', imgUrl: 'facebook'),
-    Qrcode(id: 3, url: 'twitter.com', imgUrl: 'twitter'),
+    Qrcode(id: 0, url: 'youtube.com', imgUrl: '0'),
+    Qrcode(id: 1, url: 'google.com', imgUrl: '1'),
+    Qrcode(id: 2, url: 'facebook.com', imgUrl: '2'),
+    Qrcode(id: 3, url: 'twitter.com', imgUrl: '3'),
+    Qrcode(id: 4, url: 'instagram.com', imgUrl: '4'),
+    Qrcode(id: 5, url: 'linkedin.com', imgUrl: '0'),
+    Qrcode(id: 6, url: 'pinterest.com', imgUrl: '1'),
+    Qrcode(id: 7, url: 'tumblr.com', imgUrl: '2'),
+    Qrcode(id: 8, url: 'reddit.com', imgUrl: '3'),
+    Qrcode(id: 9, url: 'snapchat.com', imgUrl: '4'),
+    Qrcode(id: 10, url: 'bitchasshoe.com', imgUrl: '0'),
+    Qrcode(id: 11, url: 'bitchasshoe.com', imgUrl: '1'),
+    Qrcode(id: 12, url: 'bitchasshoe.com', imgUrl: '2'),
+    Qrcode(id: 13, url: 'bitchasshoe.com', imgUrl: '3'),
+    Qrcode(id: 14, url: 'bitchasshoe.com', imgUrl: '4'),
+    Qrcode(id: 15, url: 'bitchasshoe.com', imgUrl: '0'),
+    Qrcode(id: 16, url: 'bitchasshoe.com', imgUrl: '1'),
+    Qrcode(id: 17, url: 'bitchasshoe.com', imgUrl: '2'),
+    Qrcode(id: 18, url: 'bitchasshoe.com', imgUrl: '3'),
 
   ];
 
@@ -24,23 +39,58 @@ class _HistoryPageState extends State<HistoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-      child: Expanded(
-        child: SizedBox(
-          height: 100,  // Define a height for the Container
-          child: ListView(
-            children: qrcodes.map((qrcode) {
-              return Column(
-                children: [
-                  Text('ID: ${qrcode.id}'),
-                  Text('URL: ${qrcode.url}'),
-                  Text('Image URL: ${qrcode.imgUrl}'),
-                ],
-              );
-            }).toList(),
+        child: Container(
+          height: MediaQuery.of(context).size.height, // 100% of screen height
+          color: Theme.of(context).primaryColor,
+          padding: const EdgeInsets.all(10.0),
+          child: Container(
+            height: MediaQuery.of(context).size.height * 0.7, // 70% of screen height
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColorDark,
+              borderRadius: BorderRadius.circular(25),
+            ),
+            padding: const EdgeInsets.all(8.0),
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: ListView(
+                children: qrcodes.map((qrcode) {
+                  return Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 45,
+                          child: Column(
+                            children: [
+                              Align(
+                                alignment: Alignment.center,
+                                child: Row(
+                                  children: [
+                                    const Image(
+                                      image: NetworkImage("https://media.sciencephoto.com/image/c0280133/800wm/C0280133-QR_Code_Example.jpg"), 
+                                      height: 40,
+                                      width: 40
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text('URL: ${qrcode.url}'),
+                                    ),
+                                    Icon(Icons.arrow_right, color: Theme.of(context).textTheme.bodyLarge?.color, size: 30),
+                                  ],
+                                )
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
           ),
         ),
       ),
-    ),
     );
   }
 }
