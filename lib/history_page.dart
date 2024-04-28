@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iste252_project_3/qrcode.dart';
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage({super.key, required this.title});
@@ -9,44 +10,37 @@ class HistoryPage extends StatefulWidget {
 }
 
 class _HistoryPageState extends State<HistoryPage> {
-  Color color = Colors.yellow;
+  List<Qrcode> qrcodes = [
+    Qrcode(id: 0, url: 'youtube.com', imgUrl: 'youtube'),
+    Qrcode(id: 1, url: 'google.com', imgUrl: 'google'),
+    Qrcode(id: 2, url: 'facebook.com', imgUrl: 'facebook'),
+    Qrcode(id: 3, url: 'twitter.com', imgUrl: 'twitter'),
+
+  ];
+
+    
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextButton(
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.purpleAccent,
-                textStyle: const TextStyle(fontSize: 20),
-              ),
-              onPressed: () {
-                setState(() {
-                  if (color == Colors.green) {
-                    color = Colors.yellow;
-                  } else {
-                    color = Colors.green;
-                  }
-                });
-              },
-              child: const Text('Switch Color'),
-            ),
-            Container(
-              height: 160,
-              width: 160,
-              decoration: BoxDecoration(
-                color: color,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              margin: const EdgeInsets.all(10),
-            )
-          ],
+      child: Expanded(
+        child: SizedBox(
+          height: 100,  // Define a height for the Container
+          child: ListView(
+            children: qrcodes.map((qrcode) {
+              return Column(
+                children: [
+                  Text('ID: ${qrcode.id}'),
+                  Text('URL: ${qrcode.url}'),
+                  Text('Image URL: ${qrcode.imgUrl}'),
+                ],
+              );
+            }).toList(),
+          ),
         ),
       ),
+    ),
     );
   }
 }
