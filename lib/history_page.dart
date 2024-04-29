@@ -82,11 +82,6 @@ class _HistoryPageState extends State<HistoryPage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        const Image(
-                                            image: NetworkImage(
-                                                "https://media.sciencephoto.com/image/c0280133/800wm/C0280133-QR_Code_Example.jpg"),
-                                            height: 40,
-                                            width: 40),
                                         Flexible(
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),

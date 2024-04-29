@@ -28,7 +28,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   String url = "";
-  List<Qrcode> historyObj = qrcodesFromJson(localStorage.getItem('history').toString());
+  List<Qrcode> historyObj =
+      qrcodesFromJson(localStorage.getItem('history').toString());
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -93,6 +94,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       url = capture.barcodes.first.displayValue.toString();
     });
 
+    Qrcode newQR = Qrcode(url: url, imgUrl: "0");
+    historyObj.add(newQR);
+    localStorage.setItem('history', qrcodesToJson(historyObj));
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -114,13 +119,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               },
             ),
             TextButton(
-              child: const Text('Save to Favorites'),
+              child: const Text('Close'),
               onPressed: () {
                 Navigator.of(context).pop();
                 didChangeAppLifecycleState(AppLifecycleState.resumed);
-                Qrcode newQR = Qrcode(url: url, imgUrl: "0");
-                historyObj.add(newQR);
-                localStorage.setItem('history', qrcodesToJson(historyObj));
                 isDialogShowing = false;
               },
             ),

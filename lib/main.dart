@@ -45,26 +45,7 @@ class _MyAppState extends State<MyApp> {
   }
 
     List<Qrcode> sampleQrcodes = [
-    Qrcode(url: 'youtube.com', imgUrl: '0'),
-    Qrcode(url: 'google.com', imgUrl: '1'),
-    Qrcode(url: 'facebook.com', imgUrl: '2'),
-    Qrcode(url: 'twitter.com', imgUrl: '3'),
-    Qrcode(url: 'instagram.com', imgUrl: '4'),
-    Qrcode(url: 'linkedin.com', imgUrl: '0'),
-    Qrcode(url: 'pinterest.com', imgUrl: '1'),
-    Qrcode(url: 'tumblr.com', imgUrl: '2'),
-    Qrcode(url: 'reddit.com', imgUrl: '3'),
-    Qrcode(url: 'snapchat.com', imgUrl: '4'),
-    Qrcode(url: 'testdomain.com', imgUrl: '0'),
-    Qrcode(url: 'testdomain.com', imgUrl: '1'),
-    Qrcode(url: 'testdomain.com', imgUrl: '2'),
-    Qrcode(url: 'testdomain.com', imgUrl: '3'),
-    Qrcode(url: 'testdomain.com', imgUrl: '4'),
-    Qrcode(url: 'testdomain.com', imgUrl: '0'),
-    Qrcode(url: 'testdomain.com', imgUrl: '1'),
-    Qrcode(url: 'testdomain.com', imgUrl: '2'),
-    Qrcode(url: 'testdomain.com', imgUrl: '3'),
-    Qrcode(url: 'https://www.testdomain.com/super/long/url/hello.jpeg',imgUrl: '1'),
+    Qrcode(url: 'https://rit.edu', imgUrl: '0'),
   ];
 
   @override
