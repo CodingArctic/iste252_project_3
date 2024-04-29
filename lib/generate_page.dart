@@ -10,7 +10,7 @@ class GeneratePage extends StatefulWidget {
 }
 
 class _GeneratePageState extends State<GeneratePage> {
-  String qrData="hello";
+  String qrData="";
   final qrdataFeed = TextEditingController();
 
   @override
