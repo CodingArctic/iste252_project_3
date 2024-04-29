@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:qr_flutter/qr_flutter.dart' as qr;
 
 class GeneratePage extends StatefulWidget {
-  const GeneratePage({super.key, required this.title});
+  const GeneratePage({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
@@ -9,8 +10,9 @@ class GeneratePage extends StatefulWidget {
 }
 
 class _GeneratePageState extends State<GeneratePage> {
-  Color color = Colors.yellow;
-  
+  String qrData="hello";
+  final qrdataFeed = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,35 +20,49 @@ class _GeneratePageState extends State<GeneratePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            TextButton(
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.purpleAccent,
-                textStyle: const TextStyle(fontSize: 20),
+            Container(
+              padding: const EdgeInsets.all(10),
+              child: const Text(
+                'Generate QR Code',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              onPressed: () {
-                setState(() {
-                  if (color == Colors.green) {
-                    color = Colors.yellow;
-                  } else {
-                    color = Colors.green;
-                  }
-                });
-              },
-              child: const Text('Switch Color'),
             ),
             Container(
-              height: 160,
-              width: 160,
-              decoration: BoxDecoration(
-                color: color,
-                borderRadius: BorderRadius.circular(12),
+              padding: const EdgeInsets.all(10),
+              child: TextField(
+                controller: qrdataFeed,
+                decoration: const InputDecoration(
+                  hintText: 'Enter the data for QR Code',
+                ),
               ),
-              margin: const EdgeInsets.all(10),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (qrdataFeed.text.isEmpty) {
+                  //a little validation for the textfield
+                  setState(() {
+                    qrData = "";
+                  });
+                } else {
+                  setState(() {
+                    qrData = qrdataFeed.text;
+                  });
+                }
+              },
+              child: const Text('Generate QR Code'),
+            ),
+            qr.QrImageView(
+              data: qrData,
+              version: qr.QrVersions.auto,
+              size: 200.0,
+              backgroundColor: Colors.white,
             )
           ],
         ),
-      ),
-    );
+      )
+    );   
   }
 }
