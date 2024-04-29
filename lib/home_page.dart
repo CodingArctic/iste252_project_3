@@ -1,20 +1,23 @@
 import 'dart:async';
 
+import 'package:iste252_project_3/qrcode.dart';
 import 'package:flutter/material.dart';
-
-// import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-
-// import 'package:mobile_scanner_example/mobile_scanner_overlay.dart';
-
-enum SizeChoices { small, medium, large }
+import 'package:localstorage/localstorage.dart';
 
 final MobileScannerController controller = MobileScannerController(
     // required options for the scanner
     );
 
 StreamSubscription<Object?>? _subscription;
+
+_launchURL(String urlToLaunch) async {
+  final Uri url = Uri.parse(urlToLaunch.toString());
+  if (!await launchUrl(url)) {
+    throw Exception('Could not launch $url');
+  }
+}
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -24,7 +27,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
-  String url = "Scan a QR Code!";
+  String url = "";
+  List<Qrcode> historyObj = qrcodesFromJson(localStorage.getItem('history').toString());
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -93,22 +97,30 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Scanned Code'),
+          title: const Text('Scanned Code'),
           content: Text('The scanned code is: $url'),
           actions: <Widget>[
             TextButton(
-              child: Text('Open Link'),
+              child: const Text('Open Link'),
               onPressed: () {
                 Navigator.of(context).pop();
                 didChangeAppLifecycleState(AppLifecycleState.resumed);
                 isDialogShowing = false;
+                try {
+                  _launchURL(url);
+                } on Exception {
+                  // not a url, ignore
+                }
               },
             ),
             TextButton(
-              child: Text('Save to Favorites'),
+              child: const Text('Save to Favorites'),
               onPressed: () {
                 Navigator.of(context).pop();
                 didChangeAppLifecycleState(AppLifecycleState.resumed);
+                Qrcode newQR = Qrcode(url: url, imgUrl: "0");
+                historyObj.add(newQR);
+                localStorage.setItem('history', qrcodesToJson(historyObj));
                 isDialogShowing = false;
               },
             ),
@@ -125,8 +137,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     return Column(
       children: <Widget>[
         SizedBox(
-            height: 500,
-            width: 300,
+            height: MediaQuery.of(context).size.height * .7,
+            width: MediaQuery.of(context).size.width * .8,
             child: MobileScanner(controller: controller)),
       ],
     );
