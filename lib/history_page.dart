@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iste252_project_3/qrcode.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:localstorage/localstorage.dart';
 
@@ -11,6 +12,13 @@ class HistoryPage extends StatefulWidget {
   State<HistoryPage> createState() => _HistoryPageState();
 }
 
+_launchURL(String urlToLaunch) async {
+  final Uri url = Uri.parse(urlToLaunch.toString());
+  if (!await launchUrl(url)) {
+    throw Exception('Could not launch $url');
+  }
+}
+
 class _HistoryPageState extends State<HistoryPage> {
   List<Qrcode> historyObj =
       qrcodesFromJson(localStorage.getItem('history').toString());
@@ -18,6 +26,9 @@ class _HistoryPageState extends State<HistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Scan History'),
+      ),
       body: Center(
         child: Container(
           height: MediaQuery.of(context).size.height, // 100% of screen height
@@ -41,7 +52,6 @@ class _HistoryPageState extends State<HistoryPage> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            print('Tapped on ${qrcode.url}');
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
@@ -53,6 +63,13 @@ class _HistoryPageState extends State<HistoryPage> {
                                       height: 250,
                                       width: 250),
                                   actions: <Widget>[
+                                    TextButton(
+                                      child: const Text('Open Link'),
+                                      onPressed: () {
+                                        _launchURL(qrcode.url);
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
                                     TextButton(
                                       child: const Text('Close'),
                                       onPressed: () {

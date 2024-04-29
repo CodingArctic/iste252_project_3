@@ -136,13 +136,22 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        SizedBox(
-            height: MediaQuery.of(context).size.height * .7,
-            width: MediaQuery.of(context).size.width * .8,
-            child: MobileScanner(controller: controller)),
-      ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('QR Code Scanner'),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Center(
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height * .7,
+              width: MediaQuery.of(context).size.width * .8,
+              child: MobileScanner(controller: controller),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -29,9 +29,6 @@ class _BasicBottomNavBarState extends State<BasicBottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('QR Code'),
-      ),
       body: Center(
         child: _pages.elementAt(_selectedIndex),
       ),
