@@ -5,8 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:localstorage/localstorage.dart';
 
 class HistoryPage extends StatefulWidget {
-  const HistoryPage({super.key, required this.title});
-  final String title;
+  const HistoryPage({super.key});
 
   @override
   State<HistoryPage> createState() => _HistoryPageState();
@@ -70,6 +69,25 @@ class _HistoryPageState extends State<HistoryPage> {
                                         Navigator.of(context).pop();
                                       },
                                     ),
+                                    if (qrcode.getIsFavorite() == false)
+                                      TextButton(
+                                        child: const Text('Save QR'),
+                                        onPressed: () {
+                                          qrcode.setIsFavorite(true);
+                                          localStorage.setItem('history',
+                                              qrcodesToJson(historyObj));
+                                          Navigator.of(context).pop();
+                                        },
+                                      ) else
+                                      TextButton(
+                                        child: const Text('Remove Save'),
+                                        onPressed: () {
+                                          qrcode.setIsFavorite(false);
+                                          localStorage.setItem('history',
+                                              qrcodesToJson(historyObj));
+                                          Navigator.of(context).pop();
+                                        }
+                                      ),
                                     TextButton(
                                       child: const Text('Close'),
                                       onPressed: () {

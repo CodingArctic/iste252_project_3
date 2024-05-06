@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart' as qr;
 
 class GeneratePage extends StatefulWidget {
-  const GeneratePage({Key? key, required this.title}) : super(key: key);
-  final String title;
+  const GeneratePage({Key? key}) : super(key: key);
 
   @override
   State<GeneratePage> createState() => _GeneratePageState();

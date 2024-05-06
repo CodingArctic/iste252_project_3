@@ -17,7 +17,8 @@ class Qrcode{
   String url = "";
   String imgUrlRoot = "./lib/assets/images/";
   String imgUrl = "";
-  Qrcode({required this.url, required this.imgUrl}){
+  bool isFavorite = false;
+  Qrcode({required this.url, required this.imgUrl, this.isFavorite = false}){
     imgUrl = "$imgUrlRoot$imgUrl.png";
   }
   String getImgUrl(){
@@ -26,11 +27,18 @@ class Qrcode{
   String getUrl(){
     return url;
   }
+  bool getIsFavorite () {
+    return isFavorite;
+  }
+  setIsFavorite (bool favorite) {
+    isFavorite = favorite;
+  }
   // convert qrcode obj to map
   Map<String, dynamic> toMap() {
     return {
       'url': url,
       'imgUrl': imgUrl,
+      'isFavorite': isFavorite,
     };
   }
 
@@ -39,6 +47,7 @@ class Qrcode{
     return Qrcode(
       url: map['url'],
       imgUrl: map['imgUrl'],
+      isFavorite: map['isFavorite'],
     );
   }
 }
