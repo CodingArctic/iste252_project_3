@@ -31,6 +31,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
 
   @override
   Widget build(BuildContext context) {
+    hasFavorite = historyObj.any((qrcode) => qrcode.getIsFavorite());
     return Scaffold(
       appBar: AppBar(
         title: const Text('Saved Codes'),
